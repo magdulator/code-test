@@ -1,5 +1,5 @@
-using TollFeeCalculator;
 using FluentAssertions;
+using TollCalculator.source.Models;
 
 namespace UnitTests
 {
@@ -11,7 +11,7 @@ namespace UnitTests
             // Arrange
             var expectedTotalFee = 18;
 
-            var tollCalculator = new TollCalculator();
+            var tollCalculator = new TollCalculatorService();
             DateTime[] dates = {
                 new DateTime(2024, 8, 27, 7, 0, 0), // fee: 18
                 new DateTime(2023, 8, 27, 8, 0, 0), // fee: 13
@@ -31,7 +31,7 @@ namespace UnitTests
             // Arrange
             var expectedTotalFee = 8 + 13 + 8;
 
-            var tollCalculator = new TollCalculator();
+            var tollCalculator = new TollCalculatorService();
             DateTime[] dates = {
                 new DateTime(2024, 8, 27, 6, 0, 0), // fee: 8
                 new DateTime(2024, 8, 27, 7, 1, 0), // fee: 18
@@ -53,7 +53,7 @@ namespace UnitTests
             // Arrange
             var expectedTotalFee = 0;
 
-            var tollCalculator = new TollCalculator();
+            var tollCalculator = new TollCalculatorService();
             DateTime[] dates = {
                     new DateTime(2024, 8, 26, 15, 0, 0)
             };
@@ -70,7 +70,7 @@ namespace UnitTests
         public void GetTollFee_OutsideFeeHours_ReturnsZero()
         {
             // Arrange
-            var tollCalculator = new TollCalculator();
+            var tollCalculator = new TollCalculatorService();
             DateTime[] dates = { 
                 new DateTime(2024, 8, 27, 18, 30, 0),
                 new DateTime(2024, 8, 27, 0, 0, 0),
@@ -90,7 +90,7 @@ namespace UnitTests
         {
             // Arrange
             var maximumFeeForADay = 60;
-            var tollCalculator = new TollCalculator();
+            var tollCalculator = new TollCalculatorService();
 
             DateTime[] dates = {
                 new DateTime(2024, 8, 27, 6, 0, 0), // fee: 8
@@ -119,7 +119,7 @@ namespace UnitTests
             // Arrange
             var expectedTotalFee = 0;
 
-            var tollCalculator = new TollCalculator();
+            var tollCalculator = new TollCalculatorService();
             var dates = GetTollFeeFreeDays2024();
            
             var vehicle = new Car();

@@ -1,6 +1,6 @@
-﻿using TollFeeCalculator;
+﻿using TollCalculator.source.Models;
 
-var tollCalculator = new TollCalculator();
+var tollCalculator = new TollCalculatorService();
 DateTime[] dates = {
                     new DateTime(2024, 8, 26, 7, 0, 0), //18
                    new DateTime(2024, 8, 26, 7, 59, 0), // 0 (within one hour)
