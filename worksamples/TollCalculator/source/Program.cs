@@ -10,4 +10,4 @@ DateTime[] dates = {
                                                           //== 26
 var vehicle = new Car();
 
-Console.WriteLine(tollCalculator.GetTollFee(vehicle, dates));
+Console.WriteLine(tollCalculator.GetTotalTollFee(vehicle, dates));

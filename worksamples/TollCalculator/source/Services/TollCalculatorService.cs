@@ -4,6 +4,7 @@ using TollCalculator.source.Services;
 public class TollCalculatorService
 {
     private readonly TimeIntervalFeeService _timeIntervalFeeService;
+    private static int DailyMaxTotalFee = 60;
 
     public TollCalculatorService()
     {
@@ -18,30 +19,35 @@ public class TollCalculatorService
      * @return - the total toll fee for that day
      */
 
-    public int GetTollFee(IVehicle vehicle, DateTime[] dates)
+    public int GetTotalTollFee(IVehicle vehicle, DateTime[] dates)
     {
-        DateTime intervalStart = dates[0];
-        int totalFee = 0;
-        foreach (DateTime date in dates)
+        DateTime? startOfTollHourTime = null;
+        DateTime? lastPassedTollTime = dates[0];
+        var totalFee = 0;
+        foreach (var dateTime in dates)
         {
-            int nextFee = GetTollFee(date, vehicle);
-            int tempFee = GetTollFee(intervalStart, vehicle);
-
-            long diffInMillies = date.Millisecond - intervalStart.Millisecond;
-            long minutes = diffInMillies/1000/60;
-
-            if (minutes <= 60)
+            if (startOfTollHourTime == null || (dateTime - startOfTollHourTime.Value).TotalHours >= 1)
             {
-                if (totalFee > 0) totalFee -= tempFee;
-                if (nextFee >= tempFee) tempFee = nextFee;
-                totalFee += tempFee;
+                totalFee += GetTollFee(dateTime, vehicle);
+                startOfTollHourTime = dateTime;
             }
             else
             {
-                totalFee += nextFee;
+                var currentFee = GetTollFee(dateTime, vehicle);
+                var previousFee = GetTollFee(lastPassedTollTime.Value, vehicle);
+
+                if (currentFee > previousFee)
+                {
+                    totalFee = totalFee - previousFee + currentFee;
+                }
             }
+            if (totalFee > DailyMaxTotalFee)
+            {
+                return DailyMaxTotalFee;
+            }
+            lastPassedTollTime = dateTime;
+           
         }
-        if (totalFee > 60) totalFee = 60;
         return totalFee;
     }
 
@@ -54,7 +60,6 @@ public class TollCalculatorService
     public int GetTollFee(DateTime date, IVehicle vehicle)
     {
         if (IsTollFreeDate(date) || IsTollFreeVehicle(vehicle)) return 0;
-
 
         return _timeIntervalFeeService.GetCurrentFee(date);
     }
