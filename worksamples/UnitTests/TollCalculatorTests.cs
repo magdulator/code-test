@@ -29,7 +29,7 @@ namespace UnitTests
         public void GetTollFee_NotWithinOneHour_ReturnsSumOfFees()
         {
             // Arrange
-            var expectedTotalFee = 8 + 13 + 8;
+            var expectedTotalFee = 8 + 18 + 8;
 
             var tollCalculator = new TollCalculatorService();
             DateTime[] dates = {
