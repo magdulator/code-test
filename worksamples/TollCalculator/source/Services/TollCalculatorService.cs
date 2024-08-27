@@ -61,7 +61,7 @@ public class TollCalculatorService
         return vehicle.IsTollFree;
     }
 
-    public int GetTollFee(DateTime date, IVehicle vehicle)
+    private int GetTollFee(DateTime date, IVehicle vehicle)
     {
         if (_tollFreeDaysService.IsTollFreeDate(date) || IsTollFreeVehicle(vehicle)) return 0;
 
