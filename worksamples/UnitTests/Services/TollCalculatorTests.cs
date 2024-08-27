@@ -1,7 +1,7 @@
 using FluentAssertions;
 using TollCalculator.source.Models;
 
-namespace UnitTests
+namespace UnitTests.Services
 {
     public class TollCalculatorTests
     {
@@ -93,7 +93,7 @@ namespace UnitTests
         {
             // Arrange
             var tollCalculator = new TollCalculatorService();
-            DateTime[] dates = { 
+            DateTime[] dates = {
                 new DateTime(2024, 8, 27, 18, 30, 0),
                 new DateTime(2024, 8, 27, 0, 0, 0),
                 new DateTime(2024, 8, 27, 5, 59, 59)
@@ -143,7 +143,7 @@ namespace UnitTests
 
             var tollCalculator = new TollCalculatorService();
             var dates = GetTollFeeFreeDays2024();
-           
+
             var vehicle = new Car();
 
             // Act

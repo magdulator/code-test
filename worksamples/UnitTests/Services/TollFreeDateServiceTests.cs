@@ -2,7 +2,7 @@
 using TollCalculator.source.Models;
 using TollCalculator.source.Services;
 
-namespace UnitTests
+namespace UnitTests.Services
 {
     public class TollFreeDateServiceTests
     {

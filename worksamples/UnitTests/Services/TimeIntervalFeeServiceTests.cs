@@ -1,7 +1,7 @@
 using FluentAssertions;
 using TollCalculator.source.Services;
 
-namespace UnitTests
+namespace UnitTests.Services
 {
     public class TimeIntervarFeeServiceTests
     {
