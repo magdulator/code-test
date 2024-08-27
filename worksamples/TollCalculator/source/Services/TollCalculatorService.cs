@@ -25,31 +25,32 @@ public class TollCalculatorService
     public int GetTotalTollFee(IVehicle vehicle, DateTime[] dates)
     {
         DateTime? startOfTollHourTime = null;
-        DateTime? lastPassedTollTime = dates[0];
+        var previousFeeWithinHour = 0;
         var totalFee = 0;
         foreach (var dateTime in dates)
         {
             if (startOfTollHourTime == null || (dateTime - startOfTollHourTime.Value).TotalHours >= 1)
             {
-                totalFee += GetTollFee(dateTime, vehicle);
+                // add fee as normal if there is no prev passing time or an hour has passed
+                var fee = GetTollFee(dateTime, vehicle);
+                totalFee += fee;
                 startOfTollHourTime = dateTime;
+                previousFeeWithinHour = fee;
             }
             else
             {
                 var currentFee = GetTollFee(dateTime, vehicle);
-                var previousFee = GetTollFee(lastPassedTollTime.Value, vehicle);
-
-                if (currentFee > previousFee)
+                if (currentFee > previousFeeWithinHour)
                 {
-                    totalFee = totalFee - previousFee + currentFee;
+                    // extract previous fee and add currentFee if it is larger
+                    totalFee = totalFee - previousFeeWithinHour + currentFee;
+                    previousFeeWithinHour = currentFee;
                 }
             }
             if (totalFee > DailyMaxTotalFee)
             {
                 return DailyMaxTotalFee;
             }
-            lastPassedTollTime = dateTime;
-           
         }
         return totalFee;
     }
