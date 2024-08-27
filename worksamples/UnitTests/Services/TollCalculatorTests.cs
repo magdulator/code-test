@@ -5,13 +5,19 @@ namespace UnitTests.Services
 {
     public class TollCalculatorTests
     {
+        private readonly TollCalculatorService _tollCalculatorService;
+
+        public TollCalculatorTests()
+        {
+            _tollCalculatorService = new TollCalculatorService();  
+        }
+
         [Fact]
         public void GetTollFee_WithinOneHour_ReturnsTheHighestFee()
         {
             // Arrange
             var expectedTotalFee = 13;
 
-            var tollCalculator = new TollCalculatorService();
             DateTime[] dates = {
                 new DateTime(2024, 8, 27, 14, 50, 0), // fee: 8
                 new DateTime(2024, 8, 27, 15, 15, 0), // fee: 13
@@ -19,7 +25,7 @@ namespace UnitTests.Services
             var vehicle = new Car();
 
             // Act
-            var tollFee = tollCalculator.GetTotalTollFee(vehicle, dates);
+            var tollFee = _tollCalculatorService.GetTotalTollFee(vehicle, dates);
 
             // Assert
             tollFee.Should().Be(expectedTotalFee);
@@ -31,7 +37,6 @@ namespace UnitTests.Services
             // Arrange
             var expectedTotalFee = 18;
 
-            var tollCalculator = new TollCalculatorService();
             DateTime[] dates = {
                 new DateTime(2024, 8, 27, 7, 3, 0), // fee: 18
                 new DateTime(2024, 8, 27, 7, 50, 0), // fee: 18
@@ -41,7 +46,7 @@ namespace UnitTests.Services
             var vehicle = new Car();
 
             // Act
-            var tollFee = tollCalculator.GetTotalTollFee(vehicle, dates);
+            var tollFee = _tollCalculatorService.GetTotalTollFee(vehicle, dates);
 
             // Assert
             tollFee.Should().Be(expectedTotalFee);
@@ -53,7 +58,6 @@ namespace UnitTests.Services
             // Arrange
             var expectedTotalFee = 8 + 18 + 8;
 
-            var tollCalculator = new TollCalculatorService();
             DateTime[] dates = {
                 new DateTime(2024, 8, 27, 6, 0, 0), // fee: 8
                 new DateTime(2024, 8, 27, 7, 1, 0), // fee: 18
@@ -62,7 +66,7 @@ namespace UnitTests.Services
             var vehicle = new Car();
 
             // Act
-            var tollFee = tollCalculator.GetTotalTollFee(vehicle, dates);
+            var tollFee = _tollCalculatorService.GetTotalTollFee(vehicle, dates);
 
             // Assert
             tollFee.Should().Be(expectedTotalFee);
@@ -75,14 +79,13 @@ namespace UnitTests.Services
             // Arrange
             var expectedTotalFee = 0;
 
-            var tollCalculator = new TollCalculatorService();
             DateTime[] dates = {
                     new DateTime(2024, 8, 26, 15, 0, 0)
             };
             var vehicle = new Motorbike();
 
             // Act
-            var tollFee = tollCalculator.GetTotalTollFee(vehicle, dates);
+            var tollFee = _tollCalculatorService.GetTotalTollFee(vehicle, dates);
 
             // Assert
             tollFee.Should().Be(expectedTotalFee);
@@ -92,7 +95,6 @@ namespace UnitTests.Services
         public void GetTollFee_OutsideFeeHours_ReturnsZero()
         {
             // Arrange
-            var tollCalculator = new TollCalculatorService();
             DateTime[] dates = {
                 new DateTime(2024, 8, 27, 18, 30, 0),
                 new DateTime(2024, 8, 27, 0, 0, 0),
@@ -101,7 +103,7 @@ namespace UnitTests.Services
             var vehicle = new Car();
 
             // Act
-            var tollFee = tollCalculator.GetTotalTollFee(vehicle, dates);
+            var tollFee = _tollCalculatorService.GetTotalTollFee(vehicle, dates);
 
             // Assert
             tollFee.Should().Be(0);
@@ -112,7 +114,6 @@ namespace UnitTests.Services
         {
             // Arrange
             var maximumFeeForADay = 60;
-            var tollCalculator = new TollCalculatorService();
 
             DateTime[] dates = {
                 new DateTime(2024, 8, 27, 6, 0, 0), // fee: 8
@@ -129,7 +130,7 @@ namespace UnitTests.Services
             var vehicle = new Car();
 
             // Act
-            var tollFee = tollCalculator.GetTotalTollFee(vehicle, dates);
+            var tollFee = _tollCalculatorService.GetTotalTollFee(vehicle, dates);
 
             // Assert
             tollFee.Should().Be(maximumFeeForADay);
@@ -141,13 +142,12 @@ namespace UnitTests.Services
             // Arrange
             var expectedTotalFee = 0;
 
-            var tollCalculator = new TollCalculatorService();
             var dates = GetTollFeeFreeDays2024();
 
             var vehicle = new Car();
 
             // Act
-            var tollFee = tollCalculator.GetTotalTollFee(vehicle, dates);
+            var tollFee = _tollCalculatorService.GetTotalTollFee(vehicle, dates);
 
             // Assert
             tollFee.Should().Be(expectedTotalFee);
